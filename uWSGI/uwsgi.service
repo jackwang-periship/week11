@@ -1,0 +1,30 @@
+#Start with the [Unit] section, which is used to specify metadata and ordering information. 
+#We'll simply put a description of our service here:
+[Unit]
+Description=uWSGI Emperor service
+
+#Next, we'll open up the [Service] section. 
+#We'll use the ExecStartPre directive to set up the pieces we need to run our server. 
+#This will make sure the /run/uwsgi directory is created and 
+#that our normal user owns it with the www-data group as the group owner. 
+#Both mkdir with the -p flag and the chown command return successfully 
+#even if their operation is not needed. This is what we want.
+#For the actual start command, specified by the ExecStart directive, 
+#we will point to the uwsgi executable. We will tell it to run in "Emperor mode", 
+#allowing it to manage multiple applications using the files it finds in /etc/uwsgi/sites. 
+#We will also add the pieces needed for systemd to correctly manage the process. 
+#These are taken from the uWSGI documentation here.
+[Service]
+ExecStartPre=/bin/bash -c 'mkdir -p /run/uwsgi; chown sammy:www-data /run/uwsgi'
+ExecStart=/usr/local/bin/uwsgi --emperor /etc/uwsgi/sites
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+NotifyAccess=all
+
+#Now, all we need to do is add the [Install] section. 
+#This allows us to specify when the service should be automatically started. 
+#We will tie our service to the multi-user system state. Whenever the system is set up 
+#for multiple users (the normal operating condition), our service will be activated:
+[Install]
+WantedBy=multi-user.target

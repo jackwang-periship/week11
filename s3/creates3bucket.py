@@ -1,0 +1,16 @@
+'''
+Created on May 10, 2017
+
+@author: jwang02
+'''
+import sys
+import boto3
+
+
+s3 = boto3.resource("s3")
+for bucket_name in sys.argv[1:]:
+    try:
+        response = s3.create_bucket(Bucket=bucket_name, CreateBucketConfiguration={'LocationConstraint': 'us-east-2'})
+        print response
+    except Exception as error:
+        print error

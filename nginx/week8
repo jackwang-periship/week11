@@ -1,0 +1,24 @@
+#We start our server block by indicating the port number and domain name 
+#where our first project should be accessible. 
+#We'll assume that you have a domain name for each:
+server {
+    listen 80;
+    server_name week8.com www.week8.com;
+
+#Next, we can tell Nginx not to worry if it can't find a favicon. 
+#We will also point it to the location of our static files directory 
+#where we collected our site's static elements:
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/jwang02/week8;
+    }
+
+#Next we can create a catch-all location block that will pass all additional 
+#queries straight to our application. 
+#We will include the uwsgi parameters found in the /etc/nginx/uwsgi_params 
+#and pass the traffic to the socket that the uWSGI server sets up:
+    location / {
+        include         uwsgi_params;
+        uwsgi_pass      unix:/run/uwsgi/week8.sock;
+    }
+}
