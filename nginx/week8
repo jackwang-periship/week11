@@ -10,7 +10,7 @@ server {
 #where we collected our site's static elements:
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
-        root /home/jwang02/week8;
+        root /home/jwang02/workspace/week8;
     }
 
 #Next we can create a catch-all location block that will pass all additional 
