@@ -10,6 +10,8 @@ server {
 #where we collected our site's static elements:
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
+#MAKE SURE CHANGE THE NAME OF DIRECTORY THAT week8 PROJECT IS LOCATED ON YOUR SYSTEM
+# 'jwang02' IS THE NAME OF MY ACCOUNT ON MY SYSTEM
         root /home/jwang02/workspace/week8;
     }
 
